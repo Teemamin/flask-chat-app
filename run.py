@@ -1,11 +1,13 @@
 import os
-from flask import Flask, redirect
+from flask import Flask, redirect,render_template
+from datetime import datetime
 
 app = Flask(__name__)
 messages = []
 def add_messages(username,message):
     """takes username ,message and adds it to the list above (messages)""" 
-    messages.append("{} : {}".format(username,message))
+    now = datetime.now().strftime("%H:%M:%S") # The strftime() method takes a date/time object and then converts that to a string according to a given format.
+    messages.append("({}) {} : {}".format(now,username,message))
 
 def get_all_messages():
     """get all messages and separetes them with a br"""
@@ -15,7 +17,7 @@ def get_all_messages():
 
 def index():
     """main page instruction"""
-    return "to send a message use /USERNAME/MESSAGE"
+    return render_template("index.html")
 
 @app.route("/<username>") # remebr that wen written like so "<username>" anything btw that is considered a variable
 
