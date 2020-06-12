@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect,render_template,request,session 
+from flask import Flask, redirect,render_template,request,session, url_for
 # session module is to handle our session variables
 from datetime import datetime
 
@@ -25,7 +25,7 @@ def index():
 # if request is POST then we want to create a new variable in our session called username and we want it to be = to username typed from our form input
     if "username" in session:
 # if username var is set redirect to the content of username session var(take the user to thr page) as routed in the belw ("/<username>")
-        return redirect(session["username"])
+        return redirect(url_for("user", username=session["username"]))
     return render_template("index.html")
 
 
@@ -39,6 +39,8 @@ def user(username):
         username = session["username"]     
         message = request.form["message"]
         add_messages(username, message)
+        redirect(url_for("user", username=session["username"]))
+
     return render_template("chat.html",username=username,chat_messages= messages)
 
 @app.route("/<username>/<message>")
