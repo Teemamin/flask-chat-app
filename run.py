@@ -4,7 +4,7 @@ from flask import Flask, redirect,render_template,request,session, url_for
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = "somerandom123"
+app.secret_key = os.getenv("SECRET", "somerandom123")   # it will look for a var SECRET and if it cnt find it,it will use d somerandom123
 # to generate a session ID we need to give our app a secret key,which is just a random string of letters,num,charctrs
 # in production we'd have it set as enviroment variable, like we did with the IP address
 messages = []
@@ -46,6 +46,6 @@ def user(username):
  
 
 
-app.run(host=os.getenv("IP"),port=int(os.getenv("PORT")),debug=True)
+app.run(host=os.getenv("IP", "0.0.0.0"),port=int(os.getenv("PORT", "5000")),debug=False)
 #  We're going to use os.getenv('IP') to get the IP address.
 # That's an environment variable set by gitpod, also one that we set for ourselves in Heroku during deploymnt
