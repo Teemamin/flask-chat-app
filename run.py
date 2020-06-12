@@ -29,16 +29,23 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/<username>") # remebr that wen written like so "<username>" anything btw that is considered a variable
+@app.route("/<username>", methods = ["GET","POST"] )   # remebr that wen written like so "<username>" anything btw that is considered a variable
 
 def user(username):
     """display chat messages"""
+    if request.method == "POST":
+# note dat  the username at the strt of username = session["username"] is a variable declared to take the value of the session variable username
+# same applys to the message variable: it will contain the message sent from our form
+        username = session["username"]     
+        message = request.form["message"]
+        add_messages(username, message)
     return render_template("chat.html",username=username,chat_messages= messages)
 
 @app.route("/<username>/<message>")
 def send_message(username,message):
     """"create new message and redirect back to chat page"""
     add_messages(username,message)
+    return redirect(session["username"])
     return redirect("/" + username) # redirect will redirect us to the users personalized welcom page
 
 

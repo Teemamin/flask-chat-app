@@ -8,14 +8,27 @@
 <body>
     <h1>welcome {{username}}</h1>
     <!--messages[] in run.py is a list of dictionaries,so we will loop tru the list and use the dot notation to get the value out of the dict key-->
+    <form method="POST">
+       <textarea cols="50" rows="4" name="message" id="message"> </textarea>
+       <br>
+       <button>send message</button>
+    
+    </form>
     {% for message in chat_messages%}
     <p>({{message.timestamp}}) {{message.from}}: {{message.message}}</p>
     {% endfor %}
 
     <script>
+     let textbox = document.getElementById("message")
      let timer = setTimeout(function(){
          location.reload()},5000
-     })
+     }) // the above script will ensure to refresh the page every 5secs to update the chat messages for all parties
+     textbox.onKeydown=function(e){
+         clearTimeout(timer)
+         timer = setTimeout(function(){
+         location.reload()},5000)
+
+     }
     </script>
 </body>
 </html>
